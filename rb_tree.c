@@ -219,7 +219,7 @@ static void __add_neighbour_node(struct node *orig, unsigned char packet_count, 
 	return;
 }
 
-static void *__get_node(unsigned int addr,struct node **node)
+struct node *__get_node(unsigned int addr,struct node **node)
 {
 	struct node **root = node;
 	struct node *prev = (*node);
