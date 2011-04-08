@@ -88,19 +88,21 @@ int my_daemon()
 	if ( fork() )
 		exit(EXIT_SUCCESS);
 
-	chdir( "/" );
+	if (chdir( "/" )==0) {
 
-	if ( ( fd = open(_PATH_DEVNULL, O_RDWR, 0) ) != -1 ) {
+		if ( ( fd = open(_PATH_DEVNULL, O_RDWR, 0) ) != -1 ) {
 
-		dup2(fd, STDIN_FILENO);
-		dup2(fd, STDOUT_FILENO);
-		dup2(fd, STDERR_FILENO);
+			dup2(fd, STDIN_FILENO);
+			dup2(fd, STDOUT_FILENO);
+			dup2(fd, STDERR_FILENO);
 
-		if ( fd > 2 )
-			close(fd);
+			if ( fd > 2 )
+				close(fd);
 
+		}
+	} else {
+		exit_error( "Error - can't chdir\n");
 	}
-
 	return 0;
 }
 
@@ -395,7 +397,7 @@ void write_data_in_buffer() {
 						fillme->dot_buffer = (char *)debugRealloc( fillme->dot_buffer, strlen( tmp ) + strlen( fillme->dot_buffer ) + 1, 408 );
 						strncat( fillme->dot_buffer, tmp, strlen( tmp ) );
 
-						snprintf( tmp, sizeof( tmp ), "%s\t{ router : \"%s\", neighbour : \"%s\", label : %.2f }",
+						snprintf( tmp, sizeof( tmp ), "%s{\"router\":\"%s\",\"neighbour\":\"%s\",\"label\":%.2f}",
 							(first_line ? "" : ",\n"), from_str, to_str, (float)( orig_node->tq_max / (float)neigh->tq_avg ) );
 						first_line = 0;
 						fillme->json_buffer = (char *)debugRealloc( fillme->json_buffer, strlen( tmp ) + strlen( fillme->json_buffer ) + 1, 408 );
@@ -416,7 +418,7 @@ void write_data_in_buffer() {
 					fillme->dot_buffer = (char *)debugRealloc( fillme->dot_buffer, strlen( tmp ) + strlen( fillme->dot_buffer ) + 1, 409 );
 					strncat( fillme->dot_buffer, tmp, strlen( tmp ) );
 
-					snprintf( tmp, sizeof( tmp ), "%s\t{ router : \"%s\", gateway : \"%s/%s\", label : \"HNA\" }",
+					snprintf( tmp, sizeof( tmp ), "%s{\"router\":\"%s\",\"gateway\":\"%s/%s\",\"label\":\"HNA\"}",
 						(first_line ? "" : ",\n"), from_str, to_str, hna_str );
 					first_line = 0;
 					fillme->json_buffer = (char *)debugRealloc( fillme->json_buffer, strlen( tmp ) + strlen( fillme->json_buffer ) + 1, 409 );
@@ -432,7 +434,7 @@ void write_data_in_buffer() {
 					strncat( fillme->dot_buffer, tmp, strlen( tmp ) );
 
 					snprintf( tmp, sizeof( tmp ),
-						"%s\t{ router : \"%s\", gateway : \"%s\", label : \"%s\" }",
+						"%s{\"router\":\"%s\",\"gateway\":\"%s\",\"label\":\"%s\"}",
 						(first_line ? "" : ",\n"), from_str, "0.0.0.0/0.0.0.0", "HNA" );
 					first_line = 0;
 					fillme->json_buffer = (char *)debugRealloc( fillme->json_buffer, strlen( tmp ) + strlen( fillme->json_buffer ) + 1, 410 );
