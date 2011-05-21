@@ -27,7 +27,7 @@ ifndef V
 endif
 endif
 
-CC =		gcc
+CC ?=		gcc
 CFLAGS +=	-pedantic -Wall -W -std=gnu99
 EXTRA_CFLAGS =	-DDEBUG_MALLOC -DMEMORY_USAGE -DREVISION_VERSION=$(REVISION_VERSION)
 LDFLAGS +=	-lpthread
