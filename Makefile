@@ -32,9 +32,8 @@ LDFLAGS +=	-lpthread
 
 SBINDIR =	$(INSTALL_PREFIX)/usr/sbin
 
-SRC_C= allocate.c hash.c list-batman.c vis.c udp_server.c
-SRC_H= allocate.h hash.h list-batman.h vis.h vis-types.h
-SRC_O= $(SRC_C:.c=.o)
+OBJ = allocate.o hash.o list-batman.o vis.o udp_server.o
+DEP = $(OBJ:.o=.d)
 
 BINARY_NAME= vis
 
@@ -45,16 +44,15 @@ REVISION_VERSION=\"\ $(REVISION)\"
 
 all: $(BINARY_NAME)
 
-$(BINARY_NAME):	$(SRC_O) $(SRC_H) Makefile
-	$(Q_LD)$(CC) -o $@ $(SRC_O) $(LDFLAGS)
+$(BINARY_NAME): $(OBJ) Makefile
+	$(Q_LD)$(CC) -o $@ $(OBJ) $(LDFLAGS)
 
 .c.o:
 	$(Q_CC)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MD -c $< -o $@
--include $(SRC_C:.c=.d)
+-include $(DEP)
 
 clean:
-	rm -f $(BINARY_NAME) *.o
-	rm -f `find . -name '*.d' -print`
+	rm -f $(BINARY_NAME) $(OBJ) $(DEP)
 
 install:
 	mkdir -p $(SBINDIR)
