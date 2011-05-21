@@ -23,9 +23,9 @@ BINARY_NAME= vis
 OBJ = allocate.o hash.o list-batman.o vis.o udp_server.o
 
 # vis flags and options
-CFLAGS +=	-pedantic -Wall -W -std=gnu99
-EXTRA_CFLAGS =	-DDEBUG_MALLOC -DMEMORY_USAGE -DREVISION_VERSION=$(REVISION_VERSION)
-LDFLAGS +=	-lpthread
+CFLAGS +=	-pedantic -Wall -W -std=gnu99 -MD
+CPPFLAGS +=	-DDEBUG_MALLOC -DMEMORY_USAGE -DREVISION_VERSION=$(REVISION_VERSION)
+LDLIBS +=	-lpthread
 
 # disable verbose output
 ifneq ($(findstring $(MAKEFLAGS),s),s)
@@ -39,6 +39,8 @@ endif
 
 # standard build tools
 CC ?=		gcc
+COMPILE.c = $(Q_CC)$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+LINK.o = $(Q_LD)$(CC) $(LDFLAGS) $(TARGET_ARCH)
 
 # standard install paths
 SBINDIR =	$(INSTALL_PREFIX)/usr/sbin
@@ -53,10 +55,10 @@ all: $(BINARY_NAME)
 # standard build rules
 .SUFFIXES: .o .c
 .c.o:
-	$(Q_CC)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) -MD -c $< -o $@
+	$(COMPILE.c) -o $@ $<
 
-$(BINARY_NAME): $(OBJ) Makefile
-	$(Q_LD)$(CC) -o $@ $(OBJ) $(LDFLAGS)
+$(BINARY_NAME): $(OBJ)
+	$(LINK.o) $^ $(LDLIBS) -o $@
 
 clean:
 	rm -f $(BINARY_NAME) $(OBJ) $(DEP)
