@@ -1,3 +1,5 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
 #
 # Copyright (C) 2006-2009 BATMAN contributors
 #
