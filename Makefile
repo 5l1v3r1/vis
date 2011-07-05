@@ -24,7 +24,7 @@ OBJ = allocate.o hash.o list-batman.o vis.o udp_server.o
 
 # vis flags and options
 CFLAGS +=	-pedantic -Wall -W -std=gnu99 -MD
-CPPFLAGS +=	-DDEBUG_MALLOC -DMEMORY_USAGE -DREVISION_VERSION=$(REVISION_VERSION)
+CPPFLAGS +=	-DDEBUG_MALLOC -DMEMORY_USAGE
 LDLIBS +=	-lpthread
 
 # disable verbose output
@@ -50,8 +50,12 @@ PREFIX = /usr/local
 SBINDIR = $(PREFIX)/sbin
 
 # try to generate revision
-REVISION = $(shell if [ -d .git ]; then echo $$(git describe --always --dirty 2> /dev/null || echo "[unknown]"); fi)
-REVISION_VERSION=\"\ $(REVISION)\"
+REVISION= $(shell	if [ -d .git ]; then \
+				echo $$(git describe --always --dirty --match "v*" |sed 's/^v//' 2> /dev/null || echo "[unknown]"); \
+			fi)
+ifneq ($(REVISION),)
+CPPFLAGS += -DSOURCE_VERSION=\"$(REVISION)\"
+endif
 
 # default target
 all: $(BINARY_NAME)

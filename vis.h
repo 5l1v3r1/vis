@@ -38,8 +38,9 @@
 #include "allocate.h"
 #include "list-batman.h"
 
-#define SOURCE_VERSION "0.4-alpha" //put exactly one distinct word inside the string like "0.3-pre-alpha" or "0.3-rc1" or "0.3"
-
+#ifndef SOURCE_VERSION
+#define SOURCE_VERSION "0.4"
+#endif
 
 #define MAXCHAR 4096
 
@@ -48,10 +49,6 @@
 #define JSON_PORT 2005
 
 #define ADDR_STR_LEN 16
-
-#ifndef REVISION_VERSION
-#define REVISION_VERSION "0"
-#endif
 
 
 
