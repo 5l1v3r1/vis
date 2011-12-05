@@ -720,7 +720,7 @@ void print_usage() {
 	printf( "\t-d debug level\n" );
 	printf( "\t-h help\n" );
 	printf( "\t-v Version\n\n" );
-	printf( "Olsrs3d / Meshs3d is an application to visualize a mesh network.\nIt is a part of s3d, have a look at s3d.berlios.de\n\n" );
+	printf( "Olsrs3d / Meshs3d is an application to visualize a mesh network.\nIt is a part of s3d, have a look at s3d.sourceforge.net\n\n" );
 
 }
 
