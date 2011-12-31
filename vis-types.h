@@ -1,7 +1,7 @@
 /*
  * vis-types.h
  *
- * Copyright (C) 2006-2009 Marek Lindner:
+ * Copyright (C) 2006-2012 Marek Lindner:
  *
  *
  * This program is free software; you can redistribute it and/or
