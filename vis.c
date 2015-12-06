@@ -127,7 +127,7 @@ int32_t orig_comp(void *data1, void *data2)
 }
 
 /* hashfunction to choose an entry in a hash table of given size */
-/* hash algorithm from http://en.wikipedia.org/wiki/Hash_table */
+/* hash algorithm from https://en.wikipedia.org/wiki/Hash_table */
 int32_t orig_choose(void *data, int32_t size) {
 	unsigned char *key= data;
 	uint32_t hash = 0;
